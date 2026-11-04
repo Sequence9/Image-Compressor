@@ -1,17 +1,42 @@
 # Image Compressor
 
-Image Compressor is a simple GUI application built with Python using the Tkinter library and Pillow (PIL) for image handling. This application allows users to select an image from their file system, choose a compression algorithm, set the desired quality, and then compress the image. The compressed image can be previewed within the application, and the output is saved in the same directory as the application.
+Image Compressor is a small desktop GUI built with Python, Tkinter, and Pillow. Select an image, choose JPEG, PNG, or WebP output, adjust the quality setting, and preview the result.
 
 ## Features
 
-- **Select Image**: Users can select an image to compress from their local file system.
-- **Choose Compression Algorithm**: Supports JPEG, PNG, and WebP formats.
-- **Set Compression Quality**: Allows specifying the compression quality through a slider.
-- **Image Preview**: Displays a preview of the selected or compressed image.
-- **Simple and User-Friendly Interface**: Designed for ease of use without unnecessary complexity.
+- Select an image from the local file system
+- Export as JPEG, PNG, or WebP
+- Adjust JPEG and WebP quality with a slider
+- Preview the selected or compressed image
+- Safely convert transparent and palette images when exporting to JPEG
 
+## Requirements
+
+- Python 3
+- Tkinter (included with most standard Python installations)
+- Pillow
+
+## Installation
+
+```bash
+git clone https://github.com/Sequence9/Image-Compressor.git
+cd Image-Compressor
+python -m pip install Pillow
+```
+
+## Run
+
+Because the script filename contains a space, quote it when launching from a terminal:
+
+```bash
+python "Image Compressor.py"
+```
 
 ## Usage
 
-1. Clone the repository or download the source code.
-2. Navigate to the folder containing `image_compressor.py`.
+1. Click **Select Image** and choose a JPEG, PNG, or BMP file.
+2. Choose the output format.
+3. Set the desired quality for JPEG or WebP.
+4. Click **Compress**.
+
+The result is written to the current working directory as `compressed_image.jpg`, `compressed_image.png`, or `compressed_image.webp`. Running another compression with the same format replaces the previous output.
