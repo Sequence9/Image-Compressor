@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
 from PIL import Image, ImageTk
-import os
 
 class ImageCompressor(tk.Tk):
     def __init__(self):
@@ -60,7 +59,11 @@ class ImageCompressor(tk.Tk):
 
         try:
             if algorithm == "jpeg":
-                self.compressed_image = self.input_image.copy()
+                # JPEG cannot encode alpha channels or palette images directly.
+                if self.input_image.mode in ("RGBA", "LA", "P"):
+                    self.compressed_image = self.input_image.convert("RGB")
+                else:
+                    self.compressed_image = self.input_image.copy()
                 self.compressed_image.save("compressed_image.jpg", format="JPEG", quality=quality)
             elif algorithm == "png":
                 self.compressed_image = self.input_image.copy()
