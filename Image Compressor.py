@@ -44,11 +44,20 @@ class ImageCompressor(tk.Tk):
         self.preview_label.pack()
 
     def select_image(self):
-        file_path = filedialog.askopenfilename(title="Select Image", filetypes=[("Image Files", "*.jpg;*.png;*.bmp")])
+        file_path = filedialog.askopenfilename(
+            title="Select Image",
+            filetypes=[
+                ("Image Files", ("*.jpg", "*.jpeg", "*.png", "*.bmp", "*.webp")),
+                ("All Files", "*.*"),
+            ],
+        )
         if file_path:
-            self.input_image = Image.open(file_path)
-            self.update_preview()
+            with Image.open(file_path) as image:
+                image.load()
+                self.input_image = image.copy()
 
+            self.compressed_image = None
+            self.update_preview()
     def compress_image(self):
         if self.input_image is None:
             messagebox.showerror("Error", "Please select an image first.")
