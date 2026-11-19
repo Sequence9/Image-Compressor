@@ -58,6 +58,7 @@ class ImageCompressor(tk.Tk):
 
             self.compressed_image = None
             self.update_preview()
+
     def compress_image(self):
         if self.input_image is None:
             messagebox.showerror("Error", "Please select an image first.")
@@ -68,12 +69,26 @@ class ImageCompressor(tk.Tk):
 
         try:
             if algorithm == "jpeg":
-                # JPEG cannot encode alpha channels or palette images directly.
-                if self.input_image.mode in ("RGBA", "LA", "P"):
+                has_transparency = (
+                    self.input_image.mode in ("RGBA", "LA")
+                    or "transparency" in self.input_image.info
+                )
+                if has_transparency:
+                    rgba_image = self.input_image.convert("RGBA")
+                    self.compressed_image = Image.new(
+                        "RGB", rgba_image.size, "white"
+                    )
+                    self.compressed_image.paste(
+                        rgba_image, mask=rgba_image.getchannel("A")
+                    )
+                elif self.input_image.mode != "RGB":
                     self.compressed_image = self.input_image.convert("RGB")
                 else:
                     self.compressed_image = self.input_image.copy()
-                self.compressed_image.save("compressed_image.jpg", format="JPEG", quality=quality)
+
+                self.compressed_image.save(
+                    "compressed_image.jpg", format="JPEG", quality=quality
+                )
             elif algorithm == "png":
                 self.compressed_image = self.input_image.copy()
                 self.compressed_image.save("compressed_image.png", format="PNG", optimize=True)
